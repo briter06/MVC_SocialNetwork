@@ -1,0 +1,22 @@
+@keyframes opacityAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.globe-container {
+    animation: 1s ease-in 0s 1 opacityAnimation;
+    position: relative;
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.index-title {
+    text-align: center;
+    font-family: 'Caveat Brush', serif;
+    font-size: 12vw;
+}

@@ -1,9 +1,8 @@
 @()
 
-@main("Welcome to Play") {
-  <div ng-controller="IndexController">
-    <label>Name:</label>
-    <input type="text" ng-model="name" placeholder="Enter a name here">
-    <h1>Welcome to Play {{name}}!</h1>
+@main() {
+  <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
+  <div ng-controller="IndexController" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
+    <p class="index-title no_margin">{{title}}</p>
   </div>
 }

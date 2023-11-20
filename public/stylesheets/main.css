@@ -1,0 +1,44 @@
+@import "index.css";
+
+:root {
+    --main-color:#79B0BB;
+}
+
+.no_margin {
+    margin: 0 0 0 0 !important;
+}
+
+header.main-nav-bar {
+    background-color: var(--main-color) !important;
+    height: 10vh;
+}
+
+main.main-nav-bar {
+    padding-top: 10vh;
+}
+
+.main-content-container {
+    height: 90vh;
+}
+
+.padding-container {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.general_button {
+    background-color: var(--main-color);
+    border: none;
+    cursor: pointer;
+    padding: 5px 20px;
+    font-size: 1.25rem;
+    border-radius: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.general_button:hover {
+    background-color: white;
+    color: black;
+}
