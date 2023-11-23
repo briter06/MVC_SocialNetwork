@@ -34,11 +34,25 @@ main.main-nav-bar {
     padding: 5px 20px;
     font-size: 1.25rem;
     border-radius: 20px;
-    font-weight: bold;
+    font-weight: bold !important;
     color: white;
 }
 
-.general_button:hover {
+.general_button:enabled:hover {
     background-color: white;
     color: black;
+}
+
+.validation-message {
+    color: darkred;
+    font-size: 10px;
+}
+
+.center-relative {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }

@@ -1,8 +1,48 @@
-@()
+@(form: Form[models.User], postUrl: Call)(implicit session: Session, request: RequestHeader)
 
 @main() {
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
   <div ng-controller="IndexController" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
-    <p class="index-title no_margin">{{title}}</p>
+    <div class="login-container">
+@*      <form ng-cloak method="post" action="/login" name="loginForm" id="loginForm">*@
+      @helper.form(postUrl, Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
+        <div class="login-form-container">
+          <p class="index-title">Welcome</p>
+
+          @request.flash.data.map{ case (name, value) =>
+            <p class="validation-message">@name: @value</p>
+          }
+
+          @helper.CSRF.formField
+
+          <md-input-container class="md-block">
+            <label>Username</label>
+            <input ng-model="user.username" name="username" required minlength="{{minLength}}">
+            <p class="validation-message" ng-show="loginForm.username.$touched && loginForm.username.$error.required">
+              The username is required.
+            </p>
+            <p class="validation-message" ng-show="loginForm.username.$touched && loginForm.username.$error.minlength">
+              The username must have at least {{minLength}} characters
+            </p>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Password</label>
+            <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}">
+            <p class="validation-message" ng-show="loginForm.password.$touched && loginForm.password.$error.required">
+              The password is required.
+            </p>
+            <p class="validation-message" ng-show="loginForm.password.$touched && loginForm.password.$error.minlength">
+              The password must have at least {{minLength}} characters
+            </p>
+          </md-input-container>
+
+          <md-button type="submit" class="general_button login-button" form="loginForm" ng-click="login()" ng-disabled="loginForm.$invalid">
+            Login
+          </md-button>
+        </div>
+@*      </form>*@
+      }
+    </div>
   </div>
 }
