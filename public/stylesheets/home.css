@@ -1,0 +1,79 @@
+@import "root.css";
+
+.post{
+    background-color: white;
+}
+
+.post-container {
+    width: 100%;
+    padding: 5px;
+}
+
+.image-container {
+    aspect-ratio: 4/3;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.photoInfoContainer {
+    background-color: gainsboro;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px 10px 0 0;
+}
+
+.max-10-lines {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+}
+
+.max-1-lines {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.like_button {
+    outline: none !important;
+}
+
+.like_button_checked {
+    color: var(--main-color) !important;
+}
+
+.sort_button {
+    font-weight: bold;
+    background-color: whitesmoke;
+}
+
+.sort_button_selected {
+    background-color: var(--main-color);
+}
+
+.add_button {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    aspect-ratio: 1/1;
+    margin: 20px;
+    background-color: var(--main-color);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.add_button:hover {
+    background-color: gainsboro;
+}
+
+.add_button button {
+    font-size: 30px;
+    font-weight: bold;
+    outline: none !important;
+}
