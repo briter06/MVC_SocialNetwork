@@ -39,7 +39,24 @@
     -webkit-line-clamp: 1;
 }
 
-.like_button {
+.scroll-lines {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+    padding: 5px;
+}
+/*Based on https://stackoverflow.com/a/65139956*/
+.scroll-lines::-webkit-scrollbar {
+    width: 4px;
+    background: grey;
+}
+.scroll-lines::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+}
+
+.icon_button {
     outline: none !important;
 }
 
@@ -50,6 +67,10 @@
 .sort_button {
     font-weight: bold;
     background-color: whitesmoke;
+}
+
+.sort_button:not(.sort_button_selected):hover {
+    background-color: beige;
 }
 
 .sort_button_selected {

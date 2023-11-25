@@ -4,7 +4,6 @@
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
   <div ng-controller="IndexController" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
     <div class="login-container">
-@*      <form ng-cloak method="post" action="/login" name="loginForm" id="loginForm">*@
       @helper.form(postUrl, Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
         <div class="login-form-container">
           <p class="index-title">Welcome</p>
@@ -41,7 +40,6 @@
             Login
           </md-button>
         </div>
-@*      </form>*@
       }
     </div>
   </div>

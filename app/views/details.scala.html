@@ -1,0 +1,64 @@
+@(post: Post)(form: Form[models.CommentFormResponse], postUrl: Call)(implicit session: Session, request: RequestHeader)
+
+@main() {
+  <div ng-controller="HomeController" class="main-content-container">
+    <div class="row post" style="padding: 50px !important;">
+      <div class="col-md-7">
+        <div class="post-container">
+          <div class="image-container">
+            <div class="photoInfoContainer">
+                <div class="row" style="width: 100%;">
+                    <div class="col-md-8">
+                        <p class="no_margin"><b>@post.username</b></p>
+                        <p class="no_margin">{{ formatDate('@post.creationDate') }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="no_padding no_margin" style="text-align: right;">
+                            <b class="vertical-center-relative">@post.likesNumber</b>
+                            <button
+                                class="like_button_checked no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
+                                aria-label="Like"
+                            >
+                            thumb_up
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <img style="width: 100%; height: 95%" src="@post.photoPath"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+          <div class="post-container">
+              <h3>Description:</h3>
+              <p class="scroll-lines">@post.description</p>
+              <br>
+              <h3>Comments:</h3>
+              <p class="scroll-lines">
+                  @if(post.comments.nonEmpty) {
+                      @for(comment <- post.comments) {
+                          <b>@comment.username:</b> @comment.comment<br>
+                      }
+                  }else{
+                      No comments
+                  }
+              </p>
+              <br>
+
+              @helper.form(postUrl, Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
+                  <h3>Write a comment:</h3>
+                  <input name="postId" value="@post.id" hidden/>
+                  @helper.CSRF.formField
+                  <md-input-container class="md-block">
+                      <textarea ng-model="comment" name="comment" md-maxlength="100" rows="2" md-select-on-focus required></textarea>
+                  </md-input-container>
+                  <md-button type="submit" class="general_button" form="commentForm" ng-disabled="commentForm.$invalid" style="float: right;">
+                      Post
+                  </md-button>
+              }
+          </div>
+      </div>
+    </div>
+  </div>
+}

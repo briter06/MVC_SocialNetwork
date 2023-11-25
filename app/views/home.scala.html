@@ -64,9 +64,9 @@
                         </div>
                         <div class="col-md-3">
                             <p class="no_padding no_margin" style="text-align: right;">
-                                <b>@post.likesNumber</b>
+                                <b class="vertical-center-relative">@post.likesNumber</b>
                                 <button
-                                    class="like_button_checked no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button like_button"
+                                    class="like_button_checked no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
                                     aria-label="Like"
                                 >
                                 thumb_up
@@ -74,11 +74,8 @@
                             </p>
                         </div>
                         <div class="col-md-2">
-                            <button
-                            class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button like_button"
-                            aria-label="Like"
-                            >
-                                open_in_new
+                            <button class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button">
+                                <a href="@routes.DetailsController.index(post.id)">open_in_new</a>
                             </button>
                         </div>
                     </div>
@@ -90,13 +87,15 @@
           <div class="col-md-4">
               <div class="post-container">
                   <h3>Comments:</h3>
+                  <p class="max-10-lines">
                   @if(post.comments.nonEmpty) {
                       @for(comment <- post.comments) {
-                          <p class="max-1-lines"><b>@comment.username:</b> @comment.comment</p>
+                          <b>@comment.username:</b> @comment.comment<br>
                       }
                   }else{
-                      <p class="max-1-lines">No comments</p>
+                      No comments
                   }
+                  </p>
               </div>
           </div>
         </div>

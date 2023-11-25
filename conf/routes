@@ -13,3 +13,6 @@ POST    /login                      controllers.LoginController.login()
 GET    /logout                      controllers.LoginController.logout()
 
 GET     /home                       controllers.HomeController.index()
+
+GET     /details/*id                controllers.DetailsController.index(id)
+POST    /details/comment            controllers.DetailsController.createComment()

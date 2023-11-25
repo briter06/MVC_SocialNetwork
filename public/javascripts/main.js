@@ -2,6 +2,3 @@
 // https://material.angularjs.org/latest/demo/dialog
 
 const app = angular.module('app', ['ngMaterial','index-module', 'home-module'])
-app.controller('MainController', function($scope, $mdDialog) {
-        $scope.title = "MVC Social Network"
-    });

@@ -30,7 +30,7 @@ main.main-nav-bar {
 }
 
 .general_button {
-    background-color: var(--main-color);
+    background-color: var(--main-color) !important;
     border: none;
     cursor: pointer;
     padding: 5px 20px;
@@ -41,8 +41,8 @@ main.main-nav-bar {
 }
 
 .general_button:enabled:hover {
-    background-color: white;
-    color: black;
+    background-color: gainsboro !important;
+    color: black !important;
 }
 
 .validation-message {
@@ -59,7 +59,15 @@ main.main-nav-bar {
     transform: translate(-50%, -50%);
 }
 
-button a {
+.vertical-center-relative {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+button a, button a:hover, .href-no-decorator, .href-no-decorator:hover {
     color: inherit;
     text-decoration:none;
     margin: 0 0 0 0 !important;

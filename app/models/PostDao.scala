@@ -7,7 +7,7 @@ class PostDao @Inject()():
 
     private val posts: List[Post] = List(
         Post(
-            1,
+            "1",
             "username1",
             "https://wallpapercave.com/wp/wp2033191.jpg",
             "2023-10-10",
@@ -27,7 +27,7 @@ class PostDao @Inject()():
             )
         ),
         Post(
-            2,
+            "2",
             "username2",
             "https://images8.alphacoders.com/131/1313380.png",
             "2023-05-05",
@@ -42,8 +42,5 @@ class PostDao @Inject()():
             case "date" => posts.sortBy(_.creationDate)(if(asc) Ordering[String] else Ordering[String].reverse)
             case "likes" => posts.sortBy(_.likesNumber)(if(asc) Ordering[Int] else Ordering[Int].reverse)
 
-    def getPost(id: Int): Option[Post] =
+    def getPost(id: String): Option[Post] =
         posts.find(p => p.id == id)
-
-    def getPost(username: String) : Option[Post] =
-        posts.find(p => p.username == username)
