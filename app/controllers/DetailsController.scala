@@ -16,7 +16,7 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
       case Some(_) =>
         val result = postDao.getPost(id)
         result match
-          case Some(post) => Ok(views.html.details(post)(CommentForm.form, CommentForm.formSubmitUrl))
+          case Some(post) => Ok(views.html.details(post))
           case _ => Redirect(routes.IndexController.index())
       case _ => Redirect(routes.IndexController.index())
   }

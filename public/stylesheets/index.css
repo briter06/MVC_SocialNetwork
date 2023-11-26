@@ -7,6 +7,15 @@
     }
 }
 
+/*Code based on https://stackoverflow.com/a/42928296*/
+.move-left.ng-hide {
+    opacity: 0;
+    transform: translateX(-100%);
+}
+.move-left.ng-hide-add, .move-left.ng-hide-remove {
+    transition: all linear 0.5s;
+}
+
 .index-title {
     text-align: center;
     font-family: 'Caveat Brush', serif;
@@ -26,7 +35,6 @@
     background-color: rgba(121, 176, 187, 0.9);
     width: 500px;
     max-width: 100vw;
-    margin: 8% auto auto;
     border-radius: 10px;
     box-shadow: 2px 2px;
 }
@@ -36,5 +44,5 @@
 }
 
 .login-button {
-    text-align:right;
+    float: right;
 }

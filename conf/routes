@@ -10,9 +10,13 @@ GET     /                           controllers.IndexController.index()
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 POST    /login                      controllers.LoginController.login()
+POST    /signup                     controllers.LoginController.signup()
 GET    /logout                      controllers.LoginController.logout()
 
 GET     /home                       controllers.HomeController.index()
 
 GET     /details/*id                controllers.DetailsController.index(id)
 POST    /details/comment            controllers.DetailsController.createComment()
+
+GET     /addPost                    controllers.CreatePostController.index()
+POST    /addPost                    controllers.CreatePostController.createPost()

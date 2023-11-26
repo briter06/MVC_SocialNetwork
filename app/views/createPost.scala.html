@@ -1,0 +1,44 @@
+@()(implicit session: Session, request: RequestHeader)
+
+@main() {
+  <div ng-controller="HomeController" class="main-content-container">
+    @helper.form(action = routes.CreatePostController.createPost(), Symbol("id") -> "postForm", Symbol("name") -> "postForm", Symbol("enctype") -> "multipart/form-data") {
+      <div class="post_form_container">
+          @helper.CSRF.formField
+          <h2>Create post</h2>
+          <div class="row" style="padding: 50px !important;">
+              <div class="col-md-3">
+                  <p><b>Photo:</b></p>
+              </div>
+              <div class="col-md-9">
+                  <input ng-model="file" name="image" type="file" accept="image/png, image/jpeg, image/jpg">
+              </div>
+          </div>
+          <div class="row" style="padding: 50px !important;">
+              <div class="col-md-3">
+                  <p><b>Description:</b></p>
+              </div>
+              <div class="col-md-9">
+                  <md-input-container class="md-block">
+                      <textarea ng-model="description" name="description" md-maxlength="500" rows="4" md-select-on-focus required></textarea>
+                  </md-input-container>
+              </div>
+          </div>
+          @request.flash.data.map{ case (name, value) =>
+              @name match {
+                  case "Error" => {<p class="validation-message">@value</p>}
+                  case "Info" => {<p class="info-message">@value</p>}
+                  case _ => {}
+              }
+          }
+          <div class="row" style="padding: 50px !important;">
+              <div class="col-md-12">
+                  <md-button type="submit" class="general_button" form="postForm" ng-disabled="postForm.$invalid" style="float: right;">
+                      Post
+                  </md-button>
+              </div>
+          </div>
+      </div>
+    }
+  </div>
+}

@@ -1,15 +1,21 @@
-@(form: Form[models.User], postUrl: Call)(implicit session: Session, request: RequestHeader)
+@(showLogin: Boolean)(implicit session: Session, request: RequestHeader)
 
 @main() {
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
-  <div ng-controller="IndexController" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
-    <div class="login-container">
-      @helper.form(postUrl, Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
+  <div ng-controller="IndexController" ng-init="showLogin = @showLogin" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
+
+    <!--Login form-->
+    <div class="login-container center-relative move-left" ng-hide="!showLogin">
+      @helper.form(LoginForm.formSubmitUrl, Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
         <div class="login-form-container">
           <p class="index-title">Welcome</p>
 
           @request.flash.data.map{ case (name, value) =>
-            <p class="validation-message">@name: @value</p>
+            @name match {
+              case "LoginError" => {<p class="validation-message">@value</p>}
+              case "LoginInfo" => {<p class="info-message">@value</p>}
+              case _ => {}
+            }
           }
 
           @helper.CSRF.formField
@@ -36,11 +42,86 @@
             </p>
           </md-input-container>
 
-          <md-button type="submit" class="general_button login-button" form="loginForm" ng-click="login()" ng-disabled="loginForm.$invalid">
-            Login
-          </md-button>
+          <div class="row">
+            <div class="col-md-6">
+              <md-button class="general_button" ng-click="showLogin = !showLogin">
+                Register
+              </md-button>
+            </div>
+            <div class="col-md-6">
+              <md-button type="submit" class="general_button login-button" form="loginForm" ng-click="login()" ng-disabled="loginForm.$invalid">
+                Login
+              </md-button>
+            </div>
+          </div>
         </div>
       }
     </div>
+
+    <!--Register form-->
+    <div class="login-container center-relative move-left" ng-hide="showLogin">
+    @helper.form(SignupForm.formSubmitUrl, Symbol("id") -> "signupForm", Symbol("name") -> "signupForm") {
+      <div class="login-form-container">
+        <p class="index-title">Sign Up</p>
+
+        @request.flash.data.map{ case (name, value) =>
+          @name match {
+            case "SignupError" => {<p class="validation-message">@value</p>}
+            case "SignupInfo" => {<p class="info-message">@value</p>}
+            case _ => {}
+          }
+        }
+
+        @helper.CSRF.formField
+
+        <md-input-container class="md-block">
+          <label>Username</label>
+          <input ng-model="user.username" name="username" required minlength="{{minLength}}">
+          <p class="validation-message" ng-show="signupForm.username.$touched && signupForm.username.$error.required">
+            The username is required.
+          </p>
+          <p class="validation-message" ng-show="signupForm.username.$touched && signupForm.username.$error.minlength">
+            The username must have at least {{minLength}} characters
+          </p>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Password</label>
+          <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}">
+          <p class="validation-message" ng-show="signupForm.password.$touched && signupForm.password.$error.required">
+            The password is required.
+          </p>
+          <p class="validation-message" ng-show="signupForm.password.$touched && signupForm.password.$error.minlength">
+            The password must have at least {{minLength}} characters
+          </p>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Repeat Password</label>
+          <input type="password" ng-model="user.repeatPassword" name="repeatPassword" required minlength="{{minLength}}">
+          <p class="validation-message" ng-show="signupForm.repeatPassword.$touched && signupForm.repeatPassword.$error.required">
+            Repeat the password.
+          </p>
+          <p class="validation-message" ng-show="signupForm.repeatPassword.$touched && signupForm.repeatPassword.$error.minlength">
+            The password must have at least {{minLength}} characters
+          </p>
+        </md-input-container>
+
+        <div class="row">
+          <div class="col-md-6">
+            <md-button class="general_button" ng-click="showLogin = !showLogin">
+              Go back
+            </md-button>
+          </div>
+          <div class="col-md-6">
+            <md-button type="submit" class="general_button login-button" form="signupForm" ng-click="login()" ng-disabled="signupForm.$invalid">
+              Sign up
+            </md-button>
+          </div>
+        </div>
+      </div>
+    }
+    </div>
+
   </div>
 }

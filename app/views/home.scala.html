@@ -3,57 +3,58 @@
 @main() {
   <div ng-controller="HomeController" class="main-content-container">
       <div class="add_button">
-          <button
-          class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button"
-          aria-label="Like"
-          >
+          <button ng-click="redirect('@routes.CreatePostController.index()')" class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button">
               add
           </button>
       </div>
-      <div>
-          <p><b>Sort by:</b></p>
-          <table>
-              <tbody>
-                  <tr>
-                      <td>
-                          <button class="sort_button @if(sortBy == "date") { sort_button_selected }">
-                              <a class="navbar-brand" href="@routes.HomeController.index()?sortBy=date&asc=@asc">Date</a>
-                          </button>
-                      </td>
-                      <td>
-                          <button class="sort_button @if(sortBy == "likes") { sort_button_selected }">
-                              <a class="navbar-brand" href="@routes.HomeController.index()?sortBy=likes&asc=@asc">Likes</a>
-                          </button>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-          <table>
-              <tbody>
-                  <tr>
-                      <td>
-                          <button class="sort_button @if(!asc) { sort_button_selected }">
-                              <a class="navbar-brand" href="@routes.HomeController.index()?sortBy=@sortBy&asc=false">Desc</a>
-                          </button>
-                      </td>
-                      <td>
-                          <button class="sort_button @if(asc) { sort_button_selected }">
-                              <a class="navbar-brand" href="@routes.HomeController.index()?sortBy=@sortBy&asc=true">Asc</a>
-                          </button>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
+      <b>Sort by:</b>
+      <div class="row" style="width: 100vw;">
+          <div class="col-md-6">
+              <table>
+                  <tbody>
+                      <tr>
+                          <td>
+                              <button ng-click="redirect('@routes.HomeController.index()?sortBy=date&asc=@asc')" class="sort_button @if(sortBy == "date") { sort_button_selected }">
+                                  Date
+                              </button>
+                          </td>
+                          <td>
+                              <button ng-click="redirect('@routes.HomeController.index()?sortBy=likes&asc=@asc')" class="sort_button @if(sortBy == "likes") { sort_button_selected }">
+                                  Likes
+                              </button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="col-md-6">
+              <table style="float: right">
+                  <tbody>
+                      <tr>
+                          <td>
+                              <button ng-click="redirect('@routes.HomeController.index()?sortBy=@sortBy&asc=false')" class="sort_button @if(!asc) { sort_button_selected }">
+                                  Desc
+                              </button>
+                          </td>
+                          <td>
+                              <button ng-click="redirect('@routes.HomeController.index()?sortBy=@sortBy&asc=true')" class="sort_button @if(asc) { sort_button_selected }">
+                                  Asc
+                              </button>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
       </div>
     @for(post <- posts){
         <div class="row post">
-          <div class="col-md-4">
+          <div class="col-md-3">
               <div class="post-container">
                   <h3>Description:</h3>
                   <p class="max-10-lines">@post.description</p>
               </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <div class="post-container">
               <div class="image-container">
                 <div class="photoInfoContainer">
@@ -74,8 +75,8 @@
                             </p>
                         </div>
                         <div class="col-md-2">
-                            <button class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button">
-                                <a href="@routes.DetailsController.index(post.id)">open_in_new</a>
+                            <button ng-click="redirect('@routes.DetailsController.index(post.id)')" class="no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button">
+                                open_in_new
                             </button>
                         </div>
                     </div>
@@ -84,7 +85,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
               <div class="post-container">
                   <h3>Comments:</h3>
                   <p class="max-10-lines">

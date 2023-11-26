@@ -1,0 +1,8 @@
+@import "root.css";
+
+.post_form_container {
+    padding: 10px;
+    margin: auto auto;
+    background-color: white;
+    width: 70%;
+}

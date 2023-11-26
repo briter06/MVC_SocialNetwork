@@ -2,6 +2,9 @@
 
 .post{
     background-color: white;
+    width: 100vw;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .post-container {
@@ -10,7 +13,7 @@
 }
 
 .image-container {
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/11;
     width: 100%;
     border-radius: 10px;
 }
@@ -42,18 +45,8 @@
 .scroll-lines {
     overflow-y: auto;
     overflow-x: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 10;
+    max-height: 250px;
     padding: 5px;
-}
-/*Based on https://stackoverflow.com/a/65139956*/
-.scroll-lines::-webkit-scrollbar {
-    width: 4px;
-    background: grey;
-}
-.scroll-lines::-webkit-scrollbar-thumb {
-    background: var(--main-color);
 }
 
 .icon_button {

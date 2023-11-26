@@ -1,4 +1,4 @@
-@(post: Post)(form: Form[models.CommentFormResponse], postUrl: Call)(implicit session: Session, request: RequestHeader)
+@(post: Post)(implicit session: Session, request: RequestHeader)
 
 @main() {
   <div ng-controller="HomeController" class="main-content-container">
@@ -32,10 +32,10 @@
       <div class="col-md-5">
           <div class="post-container">
               <h3>Description:</h3>
-              <p class="scroll-lines">@post.description</p>
+              <div class="scroll-lines">@post.description</div>
               <br>
               <h3>Comments:</h3>
-              <p class="scroll-lines">
+              <div class="scroll-lines">
                   @if(post.comments.nonEmpty) {
                       @for(comment <- post.comments) {
                           <b>@comment.username:</b> @comment.comment<br>
@@ -43,10 +43,10 @@
                   }else{
                       No comments
                   }
-              </p>
+              </div>
               <br>
 
-              @helper.form(postUrl, Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
+              @helper.form(CommentForm.formSubmitUrl, Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
                   <h3>Write a comment:</h3>
                   <input name="postId" value="@post.id" hidden/>
                   @helper.CSRF.formField

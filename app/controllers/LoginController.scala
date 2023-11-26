@@ -1,6 +1,6 @@
 package controllers
 
-import models.{Global, User, UserDao}
+import models.{Global, User, UserDao, UserSignup}
 import play.api.*
 import play.api.data.Form
 import play.api.data.Forms.{mapping, nonEmptyText}
@@ -15,7 +15,7 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
   def login() = Action { implicit request: Request[AnyContent] =>
     val formValidationResult: Form[User] = LoginForm.form.bindFromRequest()
     val errorFunction = { (formWithErrors: Form[User]) =>
-      BadRequest(views.html.index(LoginForm.form, LoginForm.formSubmitUrl))
+      BadRequest(views.html.index(true))
     }
     val successFunction = { (user: User) =>
       val possibleUser = userDao.getUser(user.username)
@@ -24,7 +24,32 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
           Redirect(routes.HomeController.index())
             .withSession(Global.SESSION_USERNAME_KEY -> user.username)
         case _ => Redirect(routes.IndexController.index())
-          .flashing("Error" -> "Invalid username/password.")
+          .flashing("LoginError" -> "Invalid username/password.")
+    }
+    formValidationResult.fold(
+      errorFunction,
+      successFunction
+    )
+  }
+
+  def signup() = Action { implicit request: Request[AnyContent] =>
+    val formValidationResult: Form[UserSignup] = SignupForm.form.bindFromRequest()
+    val errorFunction = { (formWithErrors: Form[UserSignup]) =>
+      BadRequest(views.html.index(false))
+    }
+    val successFunction = { (userSignup: UserSignup) =>
+      val possibleUser = userDao.getUser(userSignup.username)
+      possibleUser match
+        case Some(u) =>
+          Redirect(s"${routes.IndexController.index().toString}?showLogin=false")
+            .flashing("SignupError" -> "Username is already taken.")
+        case _ if userSignup.password != userSignup.repeatPassword =>
+          Redirect(s"${routes.IndexController.index().toString}?showLogin=false")
+            .flashing("SignupError" -> "The passwords are not equal.")
+        case _ =>
+          userDao.createUser(userSignup.username, userSignup.password)
+          Redirect(routes.IndexController.index())
+            .flashing("LoginInfo" -> "Please login.")
     }
     formValidationResult.fold(
       errorFunction,
@@ -45,3 +70,13 @@ object LoginForm:
     )(User.apply)(User.reverseApply)
   )
   val formSubmitUrl = routes.LoginController.login()
+
+object SignupForm:
+  val form: Form[UserSignup] = Form(
+    mapping(
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText,
+      "repeatPassword" -> nonEmptyText,
+    )(UserSignup.apply)(UserSignup.reverseApply)
+  )
+  val formSubmitUrl = routes.LoginController.signup()
