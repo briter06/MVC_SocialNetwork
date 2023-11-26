@@ -1,17 +1,17 @@
 package controllers
 
-import models.{Comment, CommentFormResponse, Global, PostDao}
+import helpers.{CommentForm, CommentFormResponse}
+import models.{Comment, Global, PostDao}
 import play.api.*
 import play.api.mvc.*
 import play.api.data.Form
-import play.api.data.Forms.{mapping, nonEmptyText}
 
 import javax.inject.*
 
 @Singleton
 class DetailsController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
-  def index(id: String) = Action { implicit request: Request[AnyContent] =>
+  def index(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     request.session.get(Global.SESSION_USERNAME_KEY) match
       case Some(_) =>
         val result = postDao.getPost(id)
@@ -21,31 +21,20 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
       case _ => Redirect(routes.IndexController.index())
   }
 
-  def createComment() = Action { implicit request: Request[AnyContent] =>
-    val formValidationResult: Form[CommentFormResponse] = CommentForm.form.bindFromRequest()
-    val errorFunction = { (formWithErrors: Form[CommentFormResponse]) =>
-      Redirect(routes.HomeController.index())
-    }
-    val successFunction = { (comment: CommentFormResponse) =>
-      val result = postDao.getPost(comment.postId)
-      (result, request.session.get(Global.SESSION_USERNAME_KEY)) match
-        case (Some(post), Some(username)) =>
-          post.comments = Comment(username, comment.comment) :: post.comments
-          Redirect(routes.DetailsController.index(comment.postId))
-        case _ => Redirect(routes.HomeController.index())
-    }
-    formValidationResult.fold(
-      errorFunction,
-      successFunction
+  def createComment(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    CommentForm.form.bindFromRequest().fold(
+      (formWithErrors: Form[CommentFormResponse]) =>
+        val values: Seq[(String, String)] = formWithErrors.errors.map(
+          error => ("Error", s"The field '${error.key}' ${error.message}")
+        )
+        Redirect(routes.HomeController.index()).flashing(values: _*),
+      (comment: CommentFormResponse) =>
+        val result = postDao.getPost(comment.postId)
+        (result, request.session.get(Global.SESSION_USERNAME_KEY)) match
+          case (Some(post), Some(username)) =>
+            post.comments = Comment(username, comment.comment) :: post.comments
+            Redirect(routes.DetailsController.index(comment.postId))
+          case _ => Redirect(routes.HomeController.index())
     )
   }
 }
-
-object CommentForm:
-  val form: Form[CommentFormResponse] = Form(
-    mapping(
-      "postId" -> nonEmptyText,
-      "comment" -> nonEmptyText,
-    )(CommentFormResponse.apply)(CommentFormResponse.reverseApply)
-  )
-  val formSubmitUrl = routes.DetailsController.createComment()

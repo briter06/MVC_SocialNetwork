@@ -1,5 +1,5 @@
 @(showLogin: Boolean)(implicit session: Session, request: RequestHeader)
-
+@import helpers.{LoginForm, SignupForm}
 @main() {
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
   <div ng-controller="IndexController" ng-init="showLogin = @showLogin" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
@@ -22,7 +22,7 @@
 
           <md-input-container class="md-block">
             <label>Username</label>
-            <input ng-model="user.username" name="username" required minlength="{{minLength}}">
+            <input ng-model="user.username" name="username" required minlength="{{minLength}}" maxlength="{{maxLength}}">
             <p class="validation-message" ng-show="loginForm.username.$touched && loginForm.username.$error.required">
               The username is required.
             </p>
@@ -33,7 +33,7 @@
 
           <md-input-container class="md-block">
             <label>Password</label>
-            <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}">
+            <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}" maxlength="{{maxLength}}">
             <p class="validation-message" ng-show="loginForm.password.$touched && loginForm.password.$error.required">
               The password is required.
             </p>
@@ -76,7 +76,7 @@
 
         <md-input-container class="md-block">
           <label>Username</label>
-          <input ng-model="user.username" name="username" required minlength="{{minLength}}">
+          <input ng-model="user.username" name="username" required minlength="{{minLength}}" maxlength="{{maxLength}}">
           <p class="validation-message" ng-show="signupForm.username.$touched && signupForm.username.$error.required">
             The username is required.
           </p>
@@ -87,7 +87,7 @@
 
         <md-input-container class="md-block">
           <label>Password</label>
-          <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}">
+          <input type="password" ng-model="user.password" name="password" required minlength="{{minLength}}" maxlength="{{maxLength}}">
           <p class="validation-message" ng-show="signupForm.password.$touched && signupForm.password.$error.required">
             The password is required.
           </p>
@@ -98,7 +98,7 @@
 
         <md-input-container class="md-block">
           <label>Repeat Password</label>
-          <input type="password" ng-model="user.repeatPassword" name="repeatPassword" required minlength="{{minLength}}">
+          <input type="password" ng-model="user.repeatPassword" name="repeatPassword" required minlength="{{minLength}}" maxlength="{{maxLength}}">
           <p class="validation-message" ng-show="signupForm.repeatPassword.$touched && signupForm.repeatPassword.$error.required">
             Repeat the password.
           </p>

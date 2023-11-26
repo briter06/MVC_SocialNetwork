@@ -68,7 +68,8 @@ class PostDao @Inject()():
                 "icestorm",
                 "flycedar",
                 "ranorgan",
-                "starship"
+                "starship",
+                "briter06"
             ),
             List(
                 Comment(
@@ -85,6 +86,7 @@ class PostDao @Inject()():
             // Description obtained from https://en.wikipedia.org/wiki/Atomium
             "The Atomium is a landmark modernist building in Brussels, Belgium, originally constructed as the centrepiece of the 1958 Brussels World's Fair (Expo 58). Designed by the engineer André Waterkeyn and the architects André and Jean Polak as a tribute to scientific progress, as well as to symbolise Belgian engineering skills at the time, it is located on the Heysel/Heizel Plateau in Laeken (northern part of the City of Brussels), where the exhibition took place. It is the city's most popular tourist attraction, and serves as a museum, an art centre and a cultural destination",
             List(
+                "briter06",
                 "teaiok-1",
                 "baseball",
                 "icestorm",

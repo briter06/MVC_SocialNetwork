@@ -57,6 +57,10 @@
     color: var(--main-color) !important;
 }
 
+.disabled_like {
+    cursor: default !important;
+}
+
 .sort_button {
     font-weight: bold;
     background-color: whitesmoke;

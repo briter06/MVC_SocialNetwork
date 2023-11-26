@@ -1,5 +1,5 @@
 @(post: Post)(implicit session: Session, request: RequestHeader)
-
+@import helpers.{Utils, CommentForm}
 @main() {
   <div ng-controller="HomeController" class="main-content-container">
     <div class="row post" style="padding: 50px !important;">
@@ -16,7 +16,7 @@
                         <p class="no_padding no_margin" style="text-align: right;">
                             <b class="vertical-center-relative">@post.likesNumber</b>
                             <button
-                                class="like_button_checked no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
+                                class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
                                 aria-label="Like"
                             >
                             thumb_up
@@ -48,6 +48,13 @@
 
               @helper.form(CommentForm.formSubmitUrl, Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
                   <h3>Write a comment:</h3>
+                  @request.flash.data.map{ case (name, value) =>
+                      @name match {
+                          case "Error" => {<p class="validation-message">@value</p>}
+                          case "Info" => {<p class="info-message">@value</p>}
+                          case _ => {}
+                      }
+                  }
                   <input name="postId" value="@post.id" hidden/>
                   @helper.CSRF.formField
                   <md-input-container class="md-block">

@@ -10,14 +10,14 @@ import javax.inject.*
 @Singleton
 class CreatePostController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
-  def index() = Action { implicit request: Request[AnyContent] =>
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     request.session.get(Global.SESSION_USERNAME_KEY) match
       case Some(_) =>
         Ok(views.html.createPost())
       case _ => Redirect(routes.IndexController.index())
   }
 
-  def createPost() = Action(parse.multipartFormData) { implicit request:  Request[MultipartFormData[Files.TemporaryFile]] =>
+  def createPost(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) { implicit request:  Request[MultipartFormData[Files.TemporaryFile]] =>
     val sessionUser = request.session.get(Global.SESSION_USERNAME_KEY)
     val requestFile = request.body.file("image")
     val requestDescription = request.body.dataParts.get("description")
