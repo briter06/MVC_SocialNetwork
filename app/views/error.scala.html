@@ -1,0 +1,18 @@
+@(code: String)(implicit session: Session)
+@main() {
+  <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
+  <div class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
+
+    <div>
+        <h1 style="text-align: center; margin-top: 30px">
+             @{
+               code match {
+                 case "404" => "404 Not Found"
+                 case "500" => "500 Server Error"
+                 case statusCode => s"$statusCode Error"
+               }
+             }
+        </h1>
+    </div>
+  </div>
+}

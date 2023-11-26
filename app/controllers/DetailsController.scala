@@ -5,6 +5,7 @@ import models.{Comment, Global, PostDao}
 import play.api.*
 import play.api.mvc.*
 import play.api.data.Form
+
 import javax.inject.*
 
 /**
@@ -16,6 +17,11 @@ import javax.inject.*
 class DetailsController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
   /**
+   * Private logger instances
+   */
+  private val logger = Logger(this.getClass)
+
+  /**
    * Route for the index page to show the details of a post
    * @param id - Id of the post to show
    * @return - New action to show the post's details
@@ -25,8 +31,10 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
       case Some(_) =>
         val result = postDao.getPost(id)
         result match
-          case Some(post) => Ok(views.html.details(post))
-          case _ => Redirect(routes.IndexController.index())
+          case Some(post) =>
+            logger.info(s"Index access for post ${id}")
+            Ok(views.html.details(post))
+          case _ => NotFound(views.html.error("404"))
       case _ => Redirect(routes.IndexController.index())
   }
 
@@ -40,11 +48,13 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
         val values: Seq[(String, String)] = formWithErrors.errors.map(
           error => ("Error", s"The field '${error.key}' ${error.message}")
         )
+        logger.error("CommentForm error")
         Redirect(routes.HomeController.index()).flashing(values: _*),
       (comment: CommentFormResponse) =>
         (postDao.getPost(id), request.session.get(Global.SESSION_USERNAME_KEY)) match
           case (Some(post), Some(username)) =>
             post.comments = Comment(username, comment.comment) :: post.comments
+            logger.info(s"New comment created by ${username} for post ${id}")
             Redirect(routes.DetailsController.index(post.id))
           case _ => Redirect(routes.HomeController.index())
     )
@@ -59,8 +69,10 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
       case (Some(post), Some(username)) =>
         if (post.likes.contains(username)) {
           post.likes = post.likes.filterNot(u => u == username)
+          logger.info(s"User ${username} removed a like for post ${post.id}")
         } else {
           post.likes = username :: post.likes
+          logger.info(s"User ${username} liked post ${post.id}")
         }
         Redirect(routes.DetailsController.index(id))
       case _ => Redirect(routes.HomeController.index())

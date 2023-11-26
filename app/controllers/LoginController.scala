@@ -16,6 +16,11 @@ import javax.inject.*
 class LoginController @Inject()(val controllerComponents: ControllerComponents, val userDao: UserDao) extends BaseController {
 
   /**
+   * Private logger instances
+   */
+  private val logger = Logger(this.getClass)
+
+  /**
    * POST handler to login a user based on the username and password
    * @return - New action depending on the result of the login attempt
    */
@@ -30,10 +35,13 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
         val possibleUser = userDao.getUser(form.username)
         possibleUser match
           case Some(u) if u.password == form.password =>
+            logger.info(s"Successful login for user ${u.username}")
             Redirect(routes.HomeController.index())
               .withSession(Global.SESSION_USERNAME_KEY -> u.username)
-          case _ => Redirect(routes.IndexController.index())
-            .flashing("LoginError" -> "Invalid username/password.")
+          case _ =>
+            logger.error(s"Invalid username/password")
+            Redirect(routes.IndexController.index())
+            .flashing("LoginError" -> "Invalid username/password")
     )
   }
 
@@ -56,13 +64,16 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
         val possibleUser = userDao.getUser(form.username)
         possibleUser match
           case Some(u) =>
+            logger.error(s"Username ${u} is already taken")
             Redirect(s"${routes.IndexController.index().toString}?showLogin=false")
               .flashing("SignupError" -> "Username is already taken.")
           case _ if form.password != form.repeatPassword =>
+            logger.error(s"The passwords are not equal for user ${form.username}")
             Redirect(s"${routes.IndexController.index().toString}?showLogin=false")
               .flashing("SignupError" -> "The passwords are not equal.")
           case _ =>
             userDao.createUser(form.username, form.password)
+            logger.info(s"User ${form.username} successfully created")
             Redirect(routes.IndexController.index())
               .flashing("LoginInfo" -> "Please login.")
     )
@@ -73,6 +84,7 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
    * @return - New action with a new session
    */
   def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    logger.info(s"Successfully logout")
     Redirect(routes.IndexController.index()).withNewSession
   }
 }

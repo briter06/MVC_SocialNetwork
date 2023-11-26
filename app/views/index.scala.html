@@ -1,7 +1,7 @@
 @(showLogin: Boolean)(implicit session: Session, request: RequestHeader)
 @main() {
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
-  <div ng-controller="IndexController" ng-init="showLogin = @showLogin" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
+  <div ng-controller="IndexController" ng-init="showLogin = @showLogin" class="main-content-container globe-container animated" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
 
     <!--Login form-->
     <div class="login-container center-relative move-left" ng-hide="!showLogin">

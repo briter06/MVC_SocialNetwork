@@ -14,6 +14,11 @@ import javax.inject.*
 class HomeController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
   /**
+   * Private logger instances
+   */
+  private val logger = Logger(this.getClass)
+
+  /**
    * Route for the index page to show all the posts
    * @return - New action to show all the posts
    */
@@ -27,6 +32,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, v
           case Some(value) => value == "true"
           case _ => false
         val posts = postDao.getPosts(sortBy, asc)
+        logger.info(s"Index access. Sort by: ${sortBy}, Asc: ${asc}")
         Ok(views.html.home(posts, sortBy, asc))
       case _ => Redirect(routes.IndexController.index())
   }

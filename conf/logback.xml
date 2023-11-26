@@ -39,8 +39,11 @@
     <appender-ref ref="STDOUT"/>
   </appender>
 
+  <logger name="controllers" level="INFO" />
+  <logger name="helpers" level="INFO" />
+  <logger name="models" level="INFO" />
   <logger name="play" level="INFO"/>
-  <logger name="application" level="DEBUG"/>
+  <logger name="application" level="INFO"/>
 
   <root level="WARN">
     <appender-ref ref="ASYNCFILE"/>

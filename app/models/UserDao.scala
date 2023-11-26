@@ -1,11 +1,12 @@
 package models
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * DAO of the User model
  */
-@javax.inject.Singleton
+@Singleton
 class UserDao @Inject()():
 
     /**

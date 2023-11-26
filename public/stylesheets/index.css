@@ -23,8 +23,11 @@
     margin-top: 0;
 }
 
-.globe-container {
+.globe-container.animated {
     animation: 1s ease-in 0s 1 opacityAnimation;
+}
+
+.globe-container {
     background-size: contain;
     background-position: bottom;
     background-repeat: no-repeat;

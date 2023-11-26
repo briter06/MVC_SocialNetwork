@@ -16,12 +16,18 @@ import javax.inject.*
 class CreatePostController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
   /**
+   * Private logger instances
+   */
+  private val logger = Logger(this.getClass)
+
+  /**
    * Route for the index page to create a post
    * @return - New action for the user
    */
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     request.session.get(Global.SESSION_USERNAME_KEY) match
       case Some(_) =>
+        logger.info("Index access")
         Ok(views.html.createPost())
       case _ => Redirect(routes.IndexController.index())
   }
@@ -42,11 +48,14 @@ class CreatePostController @Inject()(val controllerComponents: ControllerCompone
           val basePath = s"images/uploads/$filename.$extension"
           multipartData.ref.copyTo(Paths.get(s"./public/$basePath"), replace = true)
           postDao.createPost(filename, username, routes.Assets.versioned(basePath).toString, description)
+          logger.info(s"New post created by ${username} with id ${filename}")
           Redirect(routes.HomeController.index())
         }else{
+          logger.error("File is too big")
           Redirect(routes.CreatePostController.index()).flashing("Error" -> "File is too big")
         }
       case _ =>
+        logger.error("Error uploading the file")
         Redirect(routes.CreatePostController.index()).flashing("Error" -> "Error uploading the file")
   }
 }

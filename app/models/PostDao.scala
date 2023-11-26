@@ -2,11 +2,12 @@ package models
 import javax.inject.Inject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Singleton
 
 /**
  * DAO of the Post model
  */
-@javax.inject.Singleton
+@Singleton
 class PostDao @Inject()():
 
     /**
