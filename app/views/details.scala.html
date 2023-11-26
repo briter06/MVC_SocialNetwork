@@ -1,5 +1,5 @@
 @(post: Post)(implicit session: Session, request: RequestHeader)
-@import helpers.{Utils, CommentForm}
+@import helpers.Utils
 @main() {
   <div ng-controller="HomeController" class="main-content-container">
     <div class="row post" style="padding: 50px !important;">
@@ -13,15 +13,20 @@
                         <p class="no_margin">{{ formatDate('@post.creationDate') }}</p>
                     </div>
                     <div class="col-md-4">
-                        <p class="no_padding no_margin" style="text-align: right;">
-                            <b class="vertical-center-relative">@post.likesNumber</b>
-                            <button
-                                class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
-                                aria-label="Like"
-                            >
-                            thumb_up
-                            </button>
-                        </p>
+                        @helper.form(routes.DetailsController.likePost(post.id), Symbol("id") -> "likeForm", Symbol("name") -> "likeForm") {
+                            <p class="no_padding no_margin" style="text-align: right;">
+                                <b class="vertical-center-relative">@post.likesNumber</b>
+                                    @helper.CSRF.formField
+                                    <button
+                                        type="submit"
+                                        form="likeForm"
+                                        class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
+                                        aria-label="Like"
+                                    >
+                                        thumb_up
+                                    </button>
+                            </p>
+                        }
                     </div>
                 </div>
             </div>
@@ -46,7 +51,7 @@
               </div>
               <br>
 
-              @helper.form(CommentForm.formSubmitUrl, Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
+              @helper.form(routes.DetailsController.createComment(post.id), Symbol("id") -> "commentForm", Symbol("name") -> "commentForm") {
                   <h3>Write a comment:</h3>
                   @request.flash.data.map{ case (name, value) =>
                       @name match {
@@ -55,7 +60,6 @@
                           case _ => {}
                       }
                   }
-                  <input name="postId" value="@post.id" hidden/>
                   @helper.CSRF.formField
                   <md-input-container class="md-block">
                       <textarea ng-model="comment" name="comment" md-maxlength="100" rows="2" md-select-on-focus required></textarea>

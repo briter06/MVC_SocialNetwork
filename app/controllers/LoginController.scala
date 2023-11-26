@@ -5,13 +5,20 @@ import models.{Global, User, UserDao}
 import play.api.*
 import play.api.data.Form
 import play.api.mvc.*
-
 import javax.inject.*
 
-
+/**
+ * Controller to handle the login, signup and logout features
+ * @param controllerComponents - Injected controller components
+ * @param userDao - Injected DAO of the User model
+ */
 @Singleton
 class LoginController @Inject()(val controllerComponents: ControllerComponents, val userDao: UserDao) extends BaseController {
 
+  /**
+   * POST handler to login a user based on the username and password
+   * @return - New action depending on the result of the login attempt
+   */
   def login(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     LoginForm.form.bindFromRequest().fold(
       (formWithErrors: Form[LoginFormResponse]) =>
@@ -30,6 +37,10 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
     )
   }
 
+  /**
+   * POST handler to signup a user based on the username and password
+   * @return - New action depending on the result of the signup attempt
+   */
   def signup(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     SignupForm.form.bindFromRequest().fold(
       (formWithErrors: Form[SignupFormResponse]) =>
@@ -57,6 +68,10 @@ class LoginController @Inject()(val controllerComponents: ControllerComponents, 
     )
   }
 
+  /**
+   * POST handler to reset the session and logout the user
+   * @return - New action with a new session
+   */
   def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Redirect(routes.IndexController.index()).withNewSession
   }

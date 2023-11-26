@@ -7,9 +7,18 @@ import play.api.libs.Files
 import java.nio.file.Paths
 import javax.inject.*
 
+/**
+ * Controller to create a new post
+ * @param controllerComponents - Injected controller components
+ * @param postDao - Injected DAO of the Post model
+ */
 @Singleton
 class CreatePostController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
+  /**
+   * Route for the index page to create a post
+   * @return - New action for the user
+   */
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     request.session.get(Global.SESSION_USERNAME_KEY) match
       case Some(_) =>
@@ -17,13 +26,16 @@ class CreatePostController @Inject()(val controllerComponents: ControllerCompone
       case _ => Redirect(routes.IndexController.index())
   }
 
+  /**
+   * POST route to process the form and create a new post and upload a file
+   * @return - New action after creating the post and upload the file
+   */
   def createPost(): Action[MultipartFormData[Files.TemporaryFile]] = Action(parse.multipartFormData) { implicit request:  Request[MultipartFormData[Files.TemporaryFile]] =>
     val sessionUser = request.session.get(Global.SESSION_USERNAME_KEY)
     val requestFile = request.body.file("image")
     val requestDescription = request.body.dataParts.get("description")
     (sessionUser, requestFile, requestDescription) match
       case (Some(username), Some(multipartData), Some(Seq(description))) =>
-        val contentType = multipartData.contentType
         if(multipartData.fileSize.toInt < 10485760){
           val extension = Paths.get(multipartData.filename).getFileName.toString.split("\\.").last
           val filename = System.currentTimeMillis().toString

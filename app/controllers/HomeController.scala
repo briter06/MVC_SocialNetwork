@@ -5,9 +5,18 @@ import play.api.*
 import play.api.mvc.*
 import javax.inject.*
 
+/**
+ * Controller to show the home page with all the posts
+ * @param controllerComponents - Injected controller components
+ * @param postDao - Injected DAO of the Post model
+ */
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
 
+  /**
+   * Route for the index page to show all the posts
+   * @return - New action to show all the posts
+   */
   def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     request.session.get(Global.SESSION_USERNAME_KEY) match
       case Some(_) =>

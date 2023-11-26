@@ -1,12 +1,11 @@
 @(showLogin: Boolean)(implicit session: Session, request: RequestHeader)
-@import helpers.{LoginForm, SignupForm}
 @main() {
   <link href='https://fonts.googleapis.com/css?family=Caveat Brush' rel='stylesheet'>
   <div ng-controller="IndexController" ng-init="showLogin = @showLogin" class="main-content-container globe-container" style="background-image: url('@routes.Assets.versioned("images/globe.png")');">
 
     <!--Login form-->
     <div class="login-container center-relative move-left" ng-hide="!showLogin">
-      @helper.form(LoginForm.formSubmitUrl, Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
+      @helper.form(routes.LoginController.login(), Symbol("id") -> "loginForm", Symbol("name") -> "loginForm") {
         <div class="login-form-container">
           <p class="index-title">Welcome</p>
 
@@ -60,7 +59,7 @@
 
     <!--Register form-->
     <div class="login-container center-relative move-left" ng-hide="showLogin">
-    @helper.form(SignupForm.formSubmitUrl, Symbol("id") -> "signupForm", Symbol("name") -> "signupForm") {
+    @helper.form(routes.LoginController.signup(), Symbol("id") -> "signupForm", Symbol("name") -> "signupForm") {
       <div class="login-form-container">
         <p class="index-title">Sign Up</p>
 

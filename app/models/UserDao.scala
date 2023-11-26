@@ -2,9 +2,15 @@ package models
 
 import javax.inject.Inject
 
+/**
+ * DAO of the User model
+ */
 @javax.inject.Singleton
 class UserDao @Inject()():
 
+    /**
+     * In memory database for the users
+     */
     private var users: List[User] = List(
         User("briter06", "briter06"),
         User("starship", "starship"),
@@ -26,10 +32,20 @@ class UserDao @Inject()():
         User("ranorgan", "ranorgan")
     )
 
+    /**
+     * Get a user based on the username
+     * @param username - Username of the user
+     * @return - User with that username
+     */
     def getUser(username: String): Option[User] =
         val user = users.find(u => u.username == username)
         user
 
-    def createUser(username: String, password: String) =
+    /**
+     * Create a new user
+     * @param username - Username of the new user
+     * @param password - Password of the new user
+     */
+    def createUser(username: String, password: String): Unit =
         val user = User(username, password)
         users = user :: users

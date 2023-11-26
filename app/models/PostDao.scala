@@ -3,9 +3,15 @@ import javax.inject.Inject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * DAO of the Post model
+ */
 @javax.inject.Singleton
 class PostDao @Inject()():
 
+    /**
+     * In memory database for the posts
+     */
     private var posts: List[Post] = List(
         Post(
             "1",
@@ -114,15 +120,33 @@ class PostDao @Inject()():
         )
     )
 
+    /**
+     * Get all posts sorter by some criteria
+     * @param sortBy - Field name to sort the posts
+     * @param asc - Flag for ascending sorting, default is descending sorting
+     * @return
+     */
     def getPosts(sortBy: String, asc: Boolean): List[Post] =
         sortBy match
             case "date" => posts.sortBy(_.creationDate)(if(asc) Ordering[String] else Ordering[String].reverse)
             case "likes" => posts.sortBy(_.likesNumber)(if(asc) Ordering[Int] else Ordering[Int].reverse)
 
+    /**
+     * Get a post bases on its id
+     * @param id - Id of the post
+     * @return - Post with that id
+     */
     def getPost(id: String): Option[Post] =
         posts.find(p => p.id == id)
 
-    def createPost(id: String, username: String, photoPath: String, description: String) =
+    /**
+     * Create a new post and add it to the database
+     * @param id - Id of the new post
+     * @param username - Username that creates the post
+     * @param photoPath - Path of the uploaded photo
+     * @param description - Description of the new post
+     */
+    def createPost(id: String, username: String, photoPath: String, description: String): Unit =
         posts = Post(
             id,
             username,

@@ -3,20 +3,35 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-# An example controller showing a sample home page
-GET     /                           controllers.IndexController.index()
-
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
+## IndexController
+# Index route with login and signup forms
+GET     /                           controllers.IndexController.index()
+
+## LoginController
+# Route to process the login form
 POST    /login                      controllers.LoginController.login()
+# Route to process the signup form
 POST    /signup                     controllers.LoginController.signup()
+# Route to process the logout event
 GET    /logout                      controllers.LoginController.logout()
 
+## HomeController
+# Route to prepare and show all the posts
 GET     /home                       controllers.HomeController.index()
 
+## DetailsController
+# Route to prepare and show the details of an specific post based on its id (*id)
 GET     /details/*id                controllers.DetailsController.index(id)
-POST    /details/comment            controllers.DetailsController.createComment()
+# Route to comment on a post based on its id (*id)
+POST    /details/*id/comment        controllers.DetailsController.createComment(id)
+# Route to liked a post based on its id (*id)
+POST    /details/*id/like           controllers.DetailsController.likePost(id)
 
+## CreatePostController
+# Route to prepare and show the from to create a new post
 GET     /addPost                    controllers.CreatePostController.index()
+# Route to process the from and register a new post with the uploaded file
 POST    /addPost                    controllers.CreatePostController.createPost()
