@@ -7,4 +7,5 @@ target
 /.project
 /.settings
 /RUNNING_PID
-public/images/uploads/
+public/images/uploads/*
+!public/images/uploads/readme.txt
