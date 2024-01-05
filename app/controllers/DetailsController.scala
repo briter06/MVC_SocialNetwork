@@ -5,6 +5,7 @@ import models.{Comment, Global, PostDao}
 import play.api.*
 import play.api.mvc.*
 import play.api.data.Form
+import play.api.libs.json.Json
 
 import javax.inject.*
 
@@ -74,7 +75,14 @@ class DetailsController @Inject()(val controllerComponents: ControllerComponents
           post.likes = username :: post.likes
           logger.info(s"User ${username} liked post ${post.id}")
         }
-        Redirect(routes.DetailsController.index(id))
-      case _ => Redirect(routes.HomeController.index())
+        val result = Json.obj(
+          "numLikes" -> post.likes.length
+        )
+        Ok(result)
+      case _ =>
+        val result = Json.obj(
+          "error" -> "server_error"
+        )
+        Ok(result)
   }
 }

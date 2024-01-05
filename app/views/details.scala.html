@@ -13,20 +13,16 @@
                         <p class="no_margin">{{ formatDate('@post.creationDate') }}</p>
                     </div>
                     <div class="col-md-4">
-                        @helper.form(routes.DetailsController.likePost(post.id), Symbol("id") -> "likeForm", Symbol("name") -> "likeForm") {
-                            <p class="no_padding no_margin" style="text-align: right;">
-                                <b class="vertical-center-relative">@post.likesNumber</b>
-                                    @helper.CSRF.formField
-                                    <button
-                                        type="submit"
-                                        form="likeForm"
-                                        class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
-                                        aria-label="Like"
-                                    >
-                                        thumb_up
-                                    </button>
-                            </p>
-                        }
+                        <p class="no_padding no_margin" style="text-align: right;">
+                            <b class="vertical-center-relative" id="like_num_post_@post.id">@post.likesNumber</b>
+                                <button
+                                    ng-click="like($event, @post.id, '@helper.CSRF.getToken.value')"
+                                    class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
+                                    aria-label="Like"
+                                >
+                                    thumb_up
+                                </button>
+                        </p>
                     </div>
                 </div>
             </div>

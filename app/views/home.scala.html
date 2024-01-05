@@ -1,4 +1,4 @@
-@(posts: List[Post], sortBy: String, asc: Boolean)(implicit session: Session)
+@(posts: List[Post], sortBy: String, asc: Boolean)(implicit session: Session, request: RequestHeader)
 @import helpers.Utils
 @main() {
   <div ng-controller="HomeController" class="main-content-container">
@@ -65,9 +65,10 @@
                         </div>
                         <div class="col-md-3">
                             <p class="no_padding no_margin" style="text-align: right;">
-                                <b class="vertical-center-relative">@post.likesNumber</b>
+                                <b class="vertical-center-relative" id="like_num_post_@post.id">@post.likesNumber</b>
                                 <button
-                                    class="disabled_like @Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
+                                    ng-click="like($event, @post.id, '@helper.CSRF.getToken.value')"
+                                    class="@Utils.getStringIf(post.userLiked(session.get(Global.SESSION_USERNAME_KEY)), "like_button_checked") no_padding material-icons mdc-top-app-bar__action-item mdc-icon-button icon_button"
                                     aria-label="Like"
                                 >
                                 thumb_up

@@ -26,7 +26,7 @@ class ErrorHandler extends HttpErrorHandler {
    * @return - Action for the error
    */
   def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
-    logger.error(s"Client Error: ${statusCode} - ${request.path}")
+    logger.error(s"Client Error: ${statusCode} - ${request.path} - ${message}")
     Future.successful(
       Status(statusCode)(views.html.error(statusCode.toString)(request.session))
     )
