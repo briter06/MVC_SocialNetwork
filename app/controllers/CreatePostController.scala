@@ -44,12 +44,17 @@ class CreatePostController @Inject()(val controllerComponents: ControllerCompone
       case (Some(username), Some(multipartData), Some(Seq(description))) =>
         if(multipartData.fileSize.toInt < 10485760){
           val extension = Paths.get(multipartData.filename).getFileName.toString.split("\\.").last
-          val filename = System.currentTimeMillis().toString
-          val basePath = s"images/uploads/$filename.$extension"
-          multipartData.ref.copyTo(Paths.get(s"./public/$basePath"), replace = true)
-          postDao.createPost(filename, username, routes.Assets.versioned(basePath).toString, description)
-          logger.info(s"New post created by ${username} with id ${filename}")
-          Redirect(routes.HomeController.index())
+          if(List("png","jfif","pjpeg", "jpeg", "pjp", "jpg").contains(extension)){
+            val filename = System.currentTimeMillis().toString
+            val basePath = s"images/uploads/$filename.$extension"
+            multipartData.ref.copyTo(Paths.get(s"./public/$basePath"), replace = true)
+            postDao.createPost(filename, username, routes.Assets.versioned(basePath).toString, description)
+            logger.info(s"New post created by ${username} with id ${filename}")
+            Redirect(routes.HomeController.index())
+          }else{
+            logger.error("File must be an image .png, .jfif, .pjpeg, .jpeg, .pjp or .jpg")
+            Redirect(routes.CreatePostController.index()).flashing("Error" -> "File must be an image .png, .jfif, .pjpeg, .jpeg, .pjp or .jpg")
+          }
         }else{
           logger.error("File is too big")
           Redirect(routes.CreatePostController.index()).flashing("Error" -> "File is too big")
